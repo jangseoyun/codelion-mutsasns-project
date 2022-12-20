@@ -1,6 +1,6 @@
 package com.codelion.mutsasns.exception;
 
-import com.codelion.mutsasns.domain.user.dto.Response;
+import com.codelion.mutsasns.domain.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

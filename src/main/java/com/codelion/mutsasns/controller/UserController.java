@@ -1,5 +1,6 @@
 package com.codelion.mutsasns.controller;
 
+import com.codelion.mutsasns.domain.Response;
 import com.codelion.mutsasns.domain.user.dto.*;
 import com.codelion.mutsasns.service.UserService;
 import lombok.RequiredArgsConstructor;
