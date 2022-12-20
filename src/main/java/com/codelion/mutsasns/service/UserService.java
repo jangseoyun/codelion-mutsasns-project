@@ -1,12 +1,11 @@
 package com.codelion.mutsasns.service;
 
-import com.codelion.mutsasns.domain.user.dto.UserCreateFactory;
-import com.codelion.mutsasns.domain.user.dto.UserJoinRequest;
-import com.codelion.mutsasns.domain.user.dto.UserJoinResponse;
+import com.codelion.mutsasns.domain.user.dto.*;
 import com.codelion.mutsasns.domain.user.entity.Users;
 import com.codelion.mutsasns.exception.ErrorCode;
 import com.codelion.mutsasns.exception.UserException;
 import com.codelion.mutsasns.repository.UserJpaRepository;
+import com.codelion.mutsasns.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,5 +35,21 @@ public class UserService {
         Users userJoinResult = userJpaRepository.save(UserCreateFactory.of(userJoinDTO.getUserName(), passwordEncode));
 
         return UserCreateFactory.of(userJoinResult);
+    }
+
+    public UserLoginResponse userLogin(UserLoginRequest userLoginRequest) {
+        Users loginUser = userJpaRepository.findByUserName(userLoginRequest.getUserName())
+                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, String.format("%s", "가입된 유저가 아닙니다")));
+
+        if (!encoder.matches(userLoginRequest.getPassword(), loginUser.getPassword())) {
+            throw new UserException(ErrorCode.INVALID_PASSWORD, String.format("%s", "아이디 또는 비밀번호가 일치하지 않습니다"));
+        }
+        String token = JwtUtil.createToken(userLoginRequest.getUserName(), secretKey, expireTimeMs);
+        return new UserLoginResponse(token);
+    }
+
+    public Users getUserByUserName(String userName) {
+        return userJpaRepository.findByUserName(userName)
+                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, ""));
     }
 }

@@ -1,15 +1,10 @@
 package com.codelion.mutsasns.controller;
 
-import com.codelion.mutsasns.domain.user.dto.Response;
-import com.codelion.mutsasns.domain.user.dto.UserJoinRequest;
-import com.codelion.mutsasns.domain.user.dto.UserJoinResponse;
+import com.codelion.mutsasns.domain.user.dto.*;
 import com.codelion.mutsasns.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -22,5 +17,10 @@ public class UserController {
     public Response<UserJoinResponse> join(@RequestBody UserJoinRequest joinRequest) {
         UserJoinResponse userJoinResult = userService.userCheckAndJoin(joinRequest);
         return Response.success(userJoinResult);
+    }
+
+    @GetMapping("/login")
+    public UserLoginResponse login(@RequestBody UserLoginRequest userLoginRequest) {
+        return userService.userLogin(userLoginRequest);
     }
 }
