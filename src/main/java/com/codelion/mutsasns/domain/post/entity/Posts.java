@@ -1,9 +1,12 @@
 package com.codelion.mutsasns.domain.post.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Entity
@@ -20,15 +23,20 @@ public class Posts {
     private String body;
     @Column(name = "title")
     private String title;
+
+    @CreatedDate
     @Column(name = "registered_at")
-    private LocalDateTime registeredAt;
+    private String registeredAt;
+
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private String updatedAt;
 
     public Posts(String body, String title) {
         this.body = body;
         this.title = title;
+        this.registeredAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:MM:SS"));
     }
 }
