@@ -1,4 +1,4 @@
-package com.codelion.mutsasns.domain.post.dto;
+package com.codelion.mutsasns.domain.posts.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
