@@ -44,10 +44,24 @@ public class PostsService {
 
         Posts getPosts = postsJpaRepository.findById(postsIdRequest)
                 .filter(posts -> posts.getId() == loginUserId)
-                .orElseThrow(()-> new MutsaAppException(ErrorCode.INVALID_PERMISSION, "사용자가 권한이 없습니다."));
+                .orElseThrow(() -> new MutsaAppException(ErrorCode.INVALID_PERMISSION, "사용자가 권한이 없습니다."));
         getPosts.postsEdit(postsModifyInfo);
 
         Posts editPostsResult = postsJpaRepository.save(getPosts);
         return PostsCreateFactory.newPostsResponse(editPostsResult);
+    }
+
+    /*----- 요청 게시물 삭제(작성자, ADMIN) -----*/
+    public PostsResponse postsDeleteByWriter(Long postsIdRequest, String loginUsername) {
+        Long loginUserId = userService.getUserByUserName(loginUsername).getId();
+
+        postsJpaRepository.findById(postsIdRequest)
+                .filter(posts -> posts.getId() == loginUserId)
+                .ifPresentOrElse(
+                        posts -> postsJpaRepository.deleteById(posts.getId()),
+                        () -> new MutsaAppException(ErrorCode.INVALID_PERMISSION, "사용자가 권한이 없습니다.")
+                );
+
+        return PostsCreateFactory.newPostsResponse(postsIdRequest);
     }
 }
