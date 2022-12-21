@@ -27,7 +27,7 @@ public class UserService {
         //회원 중복 체크
         userJpaRepository.findByUserName(userJoinDTO.getUserName())
                 .ifPresent(user -> {
-                    throw new UserException(ErrorCode.DUPLICATED_USER_NAME, String.format("username: %s", userJoinDTO.getUserName()));
+                    throw new UserException(ErrorCode.DUPLICATED_USER_NAME, String.format("%s는 이미 있습니다.", userJoinDTO.getUserName()));
                 });
 
         //회원가입
