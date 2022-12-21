@@ -39,4 +39,11 @@ public class PostsCreateFactory {
         );
     }
 
+    public static PostsResponse newPostsResponse(Long postIdDelete) {
+        return new PostsResponse(
+                postIdDelete,
+                "포스트 삭제 완료"
+        );
+    }
+
 }
