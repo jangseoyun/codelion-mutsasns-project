@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionManager {
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<?> runtimeExceptionHandler(UserException e) {
+    public ResponseEntity<?> runtimeExceptionHandler(MutsaAppException e) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Response.error("ERROR", e.getMessage()));
     }
 
-    @ExceptionHandler(UserException.class)
-    public ResponseEntity<?> mutsaAppExceptionHandler(UserException e) {
+    @ExceptionHandler(MutsaAppException.class)
+    public ResponseEntity<?> mutsaAppExceptionHandler(MutsaAppException e) {
         ErrorResult errorResult = new ErrorResult(e.getErrorcode(), e.getMessage());
         return ResponseEntity
                 .status(e.getErrorcode().getStatus())

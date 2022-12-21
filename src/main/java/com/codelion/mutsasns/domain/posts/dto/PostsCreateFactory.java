@@ -14,8 +14,8 @@ public class PostsCreateFactory {
     }
 
     /* Posts add Response DTO 변환 */
-    public static PostsAddResponse of(Long resultPostId) {
-        return new PostsAddResponse(
+    public static PostsResponse of(Long resultPostId) {
+        return new PostsResponse(
                 resultPostId
                 , "포스트 등록 완료");
     }
@@ -30,6 +30,13 @@ public class PostsCreateFactory {
                 .createdAt(posts.getRegisteredAt())
                 .lastModifiedAt(posts.getUpdatedAt())
                 .build();
+    }
+
+    public static PostsResponse newPostsResponse(Posts editPostsResult) {
+        return new PostsResponse(
+                editPostsResult.getId(),
+                "포스트 수정 완료"
+        );
     }
 
 }
