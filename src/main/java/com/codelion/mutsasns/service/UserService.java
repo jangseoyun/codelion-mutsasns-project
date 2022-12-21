@@ -3,7 +3,7 @@ package com.codelion.mutsasns.service;
 import com.codelion.mutsasns.domain.user.dto.*;
 import com.codelion.mutsasns.domain.user.entity.Users;
 import com.codelion.mutsasns.exception.ErrorCode;
-import com.codelion.mutsasns.exception.UserException;
+import com.codelion.mutsasns.exception.MutsaAppException;
 import com.codelion.mutsasns.repository.UserJpaRepository;
 import com.codelion.mutsasns.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class UserService {
         //회원 중복 체크
         userJpaRepository.findByUserName(userJoinDTO.getUserName())
                 .ifPresent(user -> {
-                    throw new UserException(ErrorCode.DUPLICATED_USER_NAME, String.format("%s는 이미 있습니다.", userJoinDTO.getUserName()));
+                    throw new MutsaAppException(ErrorCode.DUPLICATED_USER_NAME, String.format("%s는 이미 있습니다.", userJoinDTO.getUserName()));
                 });
 
         //회원가입
@@ -39,10 +39,10 @@ public class UserService {
 
     public UserLoginResponse userLogin(UserLoginRequest userLoginRequest) {
         Users loginUser = userJpaRepository.findByUserName(userLoginRequest.getUserName())
-                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, String.format("%s", "가입된 유저가 아닙니다")));
+                .orElseThrow(() -> new MutsaAppException(ErrorCode.USERNAME_NOT_FOUND, String.format("%s", "가입된 유저가 아닙니다")));
 
         if (!encoder.matches(userLoginRequest.getPassword(), loginUser.getPassword())) {
-            throw new UserException(ErrorCode.INVALID_PASSWORD, String.format("%s", "아이디 또는 비밀번호가 일치하지 않습니다"));
+            throw new MutsaAppException(ErrorCode.INVALID_PASSWORD, String.format("%s", "아이디 또는 비밀번호가 일치하지 않습니다"));
         }
         String token = JwtUtil.createToken(userLoginRequest.getUserName(), secretKey, expireTimeMs);
         return new UserLoginResponse(token);
@@ -50,6 +50,6 @@ public class UserService {
 
     public Users getUserByUserName(String userName) {
         return userJpaRepository.findByUserName(userName)
-                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, ""));
+                .orElseThrow(() -> new MutsaAppException(ErrorCode.USERNAME_NOT_FOUND, ""));
     }
 }

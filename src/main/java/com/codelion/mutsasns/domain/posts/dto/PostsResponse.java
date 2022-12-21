@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostsAddResponse {
+public class PostsResponse {
     private Long postId;
     private String message;
 }

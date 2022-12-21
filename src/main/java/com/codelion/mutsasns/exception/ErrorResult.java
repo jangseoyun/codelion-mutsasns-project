@@ -1,12 +1,13 @@
 package com.codelion.mutsasns.exception;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ErrorResult {
     private ErrorCode errorCode;
     private String message;

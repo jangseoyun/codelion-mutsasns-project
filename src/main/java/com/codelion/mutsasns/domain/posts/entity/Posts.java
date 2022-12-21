@@ -1,5 +1,6 @@
 package com.codelion.mutsasns.domain.posts.entity;
 
+import com.codelion.mutsasns.domain.posts.dto.PostsModifyInfo;
 import com.codelion.mutsasns.domain.user.entity.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
@@ -59,6 +60,12 @@ public class Posts {
     @PreUpdate
     public void onPreUpdate() {
         this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:MM:SS"));
+    }
+
+    /* 게시물 수정 */
+    public void postsEdit(PostsModifyInfo postsModifyInfo) {
+        this.title = postsModifyInfo.getTitle();
+        this.body = postsModifyInfo.getBody();
     }
 
 }
