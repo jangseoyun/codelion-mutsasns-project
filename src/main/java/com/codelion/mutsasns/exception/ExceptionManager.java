@@ -12,13 +12,14 @@ public class ExceptionManager {
     public ResponseEntity<?> runtimeExceptionHandler(UserException e) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Response.error(e.getMessage()));
+                .body(Response.error("ERROR", e.getMessage()));
     }
 
     @ExceptionHandler(UserException.class)
-    public ResponseEntity<?> hospitalReviewAppExceptionHandler(UserException e) {
+    public ResponseEntity<?> mutsaAppExceptionHandler(UserException e) {
+        ErrorResult errorResult = new ErrorResult(e.getErrorcode(), e.getMessage());
         return ResponseEntity
                 .status(e.getErrorcode().getStatus())
-                .body(Response.error(e.getErrorcode().getMessage()));
+                .body(Response.error("ERROR", errorResult));
     }
 }
