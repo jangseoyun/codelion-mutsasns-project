@@ -62,6 +62,7 @@ public class Posts {
     public void postsEdit(PostsModifyInfo postsModifyInfo) {
         this.title = postsModifyInfo.getTitle();
         this.body = postsModifyInfo.getBody();
+        this.lastModifiedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
 }
