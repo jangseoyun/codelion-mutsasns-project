@@ -60,7 +60,7 @@ public class PostController {
 
     /*----- 게시물 전체 조회 -----*/
     @GetMapping("")
-    public Response getPostsAll(@PageableDefault(size = 20, sort = "registeredAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Response getPostsAll(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return Response.success(postsService.getPostALl(pageable));
     }
 

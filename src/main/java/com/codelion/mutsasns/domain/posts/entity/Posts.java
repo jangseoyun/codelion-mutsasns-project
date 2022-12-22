@@ -38,7 +38,7 @@ public class Posts {
     private String createdAt;
 
     @LastModifiedDate
-    @Column(name = "ast_modified_at")
+    @Column(name = "last_modified_at")
     private String lastModifiedAt;
 
     public Posts(String body, String title, Users user) {

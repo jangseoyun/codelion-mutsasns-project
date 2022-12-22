@@ -49,14 +49,6 @@ public class PostsCreateFactory {
         );
     }
 
-    public static PostsDTO newPostDTO(Posts posts) {
-        return new PostsDTO(posts.getId()
-                , posts.getTitle()
-                , posts.getBody()
-                , posts.getUsers().getUserName()
-                , posts.getCreatedAt());
-    }
-
     public static PostsPageResponse of(List<PostsDTO> postsDTOList, Pageable pageable) {
         return new PostsPageResponse(postsDTOList, pageable);
     }
