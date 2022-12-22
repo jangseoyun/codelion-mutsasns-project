@@ -1,12 +1,18 @@
 package com.codelion.mutsasns.controller;
 
 import com.codelion.mutsasns.domain.Response;
-import com.codelion.mutsasns.domain.posts.dto.*;
+import com.codelion.mutsasns.domain.posts.dto.PostsAddRequest;
+import com.codelion.mutsasns.domain.posts.dto.PostsDTO;
+import com.codelion.mutsasns.domain.posts.dto.PostsModifyInfo;
+import com.codelion.mutsasns.domain.posts.dto.PostsResponse;
 import com.codelion.mutsasns.exception.ErrorCode;
 import com.codelion.mutsasns.exception.ErrorResult;
 import com.codelion.mutsasns.service.PostsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,4 +57,11 @@ public class PostController {
         PostsResponse deleteResponse = postsService.postsDeleteByWriter(postsIdRequest, authentication.getName());
         return Response.success(deleteResponse);
     }
+
+    /*----- 게시물 전체 조회 -----*/
+    @GetMapping("")
+    public Response getPostsAll(@PageableDefault(size = 20, sort = "registeredAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        return Response.success(postsService.getPostALl(pageable));
+    }
+
 }

@@ -24,4 +24,12 @@ public class PostsDTO {
         this.createdAt = createdAt;
         this.lastModifiedAt = lastModifiedAt;
     }
+
+    public PostsDTO(Long id, String title, String body, String userName, String createdAt) {
+        this.id = id;
+        this.title = title;
+        this.body = body;
+        this.userName = userName;
+        this.createdAt = createdAt;
+    }
 }

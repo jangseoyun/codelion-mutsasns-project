@@ -8,10 +8,14 @@ import com.codelion.mutsasns.exception.MutsaAppException;
 import com.codelion.mutsasns.repository.PostsJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -63,5 +67,14 @@ public class PostsService {
                 );
 
         return PostsCreateFactory.newPostsResponse(postsIdRequest);
+    }
+
+    /*----- 게시물 전체 조회 (Paging)-----*/
+    public PostsPageResponse getPostALl(Pageable pageable) {
+        Page<Posts> postsPage = postsJpaRepository.findAll(pageable);
+        List<PostsDTO> postsDTOList = postsPage.stream()
+                .map(posts -> PostsCreateFactory.newPostDTO(posts))
+                .collect(Collectors.toList());
+        return PostsCreateFactory.of(postsDTOList, pageable);
     }
 }
