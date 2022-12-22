@@ -30,8 +30,8 @@ public class PostsCreateFactory {
                 .title(posts.getTitle())
                 .body(posts.getBody())
                 .userName(posts.getUsers().getUserName())
-                .createdAt(posts.getRegisteredAt())
-                .lastModifiedAt(posts.getUpdatedAt())
+                .createdAt(posts.getCreatedAt())
+                .lastModifiedAt(posts.getLastModifiedAt())
                 .build();
     }
 
@@ -54,7 +54,7 @@ public class PostsCreateFactory {
                 , posts.getTitle()
                 , posts.getBody()
                 , posts.getUsers().getUserName()
-                , posts.getRegisteredAt());
+                , posts.getCreatedAt());
     }
 
     public static PostsPageResponse of(List<PostsDTO> postsDTOList, Pageable pageable) {
