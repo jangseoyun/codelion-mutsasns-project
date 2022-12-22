@@ -20,7 +20,7 @@ public class UserController {
         return Response.success(userJoinResult);
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public UserLoginResponse login(@RequestBody UserLoginRequest userLoginRequest) {
         return userService.userLogin(userLoginRequest);
     }
