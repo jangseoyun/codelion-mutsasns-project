@@ -2,6 +2,9 @@ package com.codelion.mutsasns.domain.posts.dto;
 
 import com.codelion.mutsasns.domain.posts.entity.Posts;
 import com.codelion.mutsasns.domain.user.entity.Users;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public class PostsCreateFactory {
 
@@ -27,8 +30,8 @@ public class PostsCreateFactory {
                 .title(posts.getTitle())
                 .body(posts.getBody())
                 .userName(posts.getUsers().getUserName())
-                .createdAt(posts.getRegisteredAt())
-                .lastModifiedAt(posts.getUpdatedAt())
+                .createdAt(posts.getCreatedAt())
+                .lastModifiedAt(posts.getLastModifiedAt())
                 .build();
     }
 
@@ -44,6 +47,18 @@ public class PostsCreateFactory {
                 postIdDelete,
                 "포스트 삭제 완료"
         );
+    }
+
+    public static PostsDTO newPostDTO(Posts posts) {
+        return new PostsDTO(posts.getId()
+                , posts.getTitle()
+                , posts.getBody()
+                , posts.getUsers().getUserName()
+                , posts.getCreatedAt());
+    }
+
+    public static PostsPageResponse of(List<PostsDTO> postsDTOList, Pageable pageable) {
+        return new PostsPageResponse(postsDTOList, pageable);
     }
 
 }

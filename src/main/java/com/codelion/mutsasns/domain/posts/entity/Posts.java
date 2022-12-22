@@ -2,7 +2,6 @@ package com.codelion.mutsasns.domain.posts.entity;
 
 import com.codelion.mutsasns.domain.posts.dto.PostsModifyInfo;
 import com.codelion.mutsasns.domain.user.entity.Users;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,15 +34,12 @@ public class Posts {
     private Users users;
 
     @CreatedDate
-    @Column(name = "registered_at")
-    private String registeredAt;
-
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+    @Column(name = "created_at")
+    private String createdAt;
 
     @LastModifiedDate
-    @Column(name = "updated_at")
-    private String updatedAt;
+    @Column(name = "ast_modified_at")
+    private String lastModifiedAt;
 
     public Posts(String body, String title, Users user) {
         this.body = body;
@@ -53,13 +49,13 @@ public class Posts {
 
     @PrePersist
     public void onPrePersist() {
-        this.registeredAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:MM:SS"));
-        this.updatedAt = this.registeredAt;
+        this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.lastModifiedAt = this.createdAt;
     }
 
     @PreUpdate
     public void onPreUpdate() {
-        this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:MM:SS"));
+        this.lastModifiedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     /* 게시물 수정 */
