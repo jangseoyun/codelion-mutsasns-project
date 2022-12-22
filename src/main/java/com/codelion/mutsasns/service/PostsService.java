@@ -47,7 +47,7 @@ public class PostsService {
         Long loginUserId = userService.getUserByUserName(loginUsername).getId();
 
         Posts getPosts = postsJpaRepository.findById(postsIdRequest)
-                .filter(posts -> posts.getId() == loginUserId)
+                .filter(posts -> posts.getUsers().getId() == loginUserId)
                 .orElseThrow(() -> new MutsaAppException(ErrorCode.INVALID_PERMISSION, "사용자가 권한이 없습니다."));
         getPosts.postsEdit(postsModifyInfo);
 
@@ -60,7 +60,7 @@ public class PostsService {
         Long loginUserId = userService.getUserByUserName(loginUsername).getId();
 
         postsJpaRepository.findById(postsIdRequest)
-                .filter(posts -> posts.getId() == loginUserId)
+                .filter(posts -> posts.getUsers().getId() == loginUserId)
                 .ifPresentOrElse(
                         posts -> postsJpaRepository.deleteById(posts.getId()),
                         () -> new MutsaAppException(ErrorCode.INVALID_PERMISSION, "사용자가 권한이 없습니다.")
@@ -73,7 +73,7 @@ public class PostsService {
     public PostsPageResponse getPostALl(Pageable pageable) {
         Page<Posts> postsPage = postsJpaRepository.findAll(pageable);
         List<PostsDTO> postsDTOList = postsPage.stream()
-                .map(posts -> PostsCreateFactory.newPostDTO(posts))
+                .map(posts -> PostsCreateFactory.of(posts))
                 .collect(Collectors.toList());
         return PostsCreateFactory.of(postsDTOList, pageable);
     }

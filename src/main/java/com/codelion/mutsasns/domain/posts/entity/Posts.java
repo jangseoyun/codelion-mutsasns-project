@@ -38,7 +38,7 @@ public class Posts {
     private String createdAt;
 
     @LastModifiedDate
-    @Column(name = "ast_modified_at")
+    @Column(name = "last_modified_at")
     private String lastModifiedAt;
 
     public Posts(String body, String title, Users user) {
@@ -62,6 +62,7 @@ public class Posts {
     public void postsEdit(PostsModifyInfo postsModifyInfo) {
         this.title = postsModifyInfo.getTitle();
         this.body = postsModifyInfo.getBody();
+        this.lastModifiedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
 }
