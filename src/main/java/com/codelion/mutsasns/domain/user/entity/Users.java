@@ -30,6 +30,7 @@ public class Users {
     private LocalDateTime deletedAt;
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private UserRole role = UserRole.USER;
 

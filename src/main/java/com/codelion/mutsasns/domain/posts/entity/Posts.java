@@ -2,6 +2,7 @@ package com.codelion.mutsasns.domain.posts.entity;
 
 import com.codelion.mutsasns.domain.posts.dto.PostsModifyInfo;
 import com.codelion.mutsasns.domain.user.entity.Users;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class Posts {
     @Column(name = "title")
     private String title;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Users users;

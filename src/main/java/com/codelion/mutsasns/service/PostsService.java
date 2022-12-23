@@ -75,6 +75,6 @@ public class PostsService {
         List<PostsDTO> postsDTOList = postsPage.stream()
                 .map(posts -> PostsCreateFactory.of(posts))
                 .collect(Collectors.toList());
-        return PostsCreateFactory.of(postsDTOList, pageable);
+        return PostsCreateFactory.of(postsDTOList, PostsCreateFactory.newPostsPagingInfo(postsPage));
     }
 }

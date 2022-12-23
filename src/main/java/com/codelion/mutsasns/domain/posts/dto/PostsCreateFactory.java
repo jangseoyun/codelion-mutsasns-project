@@ -2,7 +2,7 @@ package com.codelion.mutsasns.domain.posts.dto;
 
 import com.codelion.mutsasns.domain.posts.entity.Posts;
 import com.codelion.mutsasns.domain.user.entity.Users;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -49,8 +49,23 @@ public class PostsCreateFactory {
         );
     }
 
-    public static PostsPageResponse of(List<PostsDTO> postsDTOList, Pageable pageable) {
+    public static PostsPageResponse of(List<PostsDTO> postsDTOList, PostPagingInfo pageable) {
         return new PostsPageResponse(postsDTOList, pageable);
+    }
+
+    /*페이징 정보*/
+    public static PostPagingInfo newPostsPagingInfo(Page pageResult) {
+        return PostPagingInfo.builder()
+                .pageable("INSTANCE")
+                .last(pageResult.hasNext())
+                .totalPages(pageResult.getTotalPages())
+                .size(pageResult.getSize())
+                .number(pageResult.getNumber())
+                .sort(pageResult.getSort())
+                .first(pageResult.isFirst())
+                .numberOfElements(pageResult.getNumberOfElements())
+                .empty(pageResult.isEmpty())
+                .build();
     }
 
 }
