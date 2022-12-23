@@ -1,11 +1,17 @@
 package com.codelion.mutsasns.controller;
 
 import com.codelion.mutsasns.domain.Response;
-import com.codelion.mutsasns.domain.user.dto.*;
+import com.codelion.mutsasns.domain.user.dto.UserJoinRequest;
+import com.codelion.mutsasns.domain.user.dto.UserJoinResponse;
+import com.codelion.mutsasns.domain.user.dto.UserLoginRequest;
+import com.codelion.mutsasns.domain.user.dto.UserLoginResponse;
 import com.codelion.mutsasns.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -21,7 +27,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public UserLoginResponse login(@RequestBody UserLoginRequest userLoginRequest) {
-        return userService.userLogin(userLoginRequest);
+    public Response<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest) {
+        UserLoginResponse jwt = userService.userLogin(userLoginRequest);
+        return Response.success(jwt);
     }
 }
