@@ -25,14 +25,14 @@ public class PostsService {
     private final PostsJpaRepository postsJpaRepository;
     private final UserService userService;
 
-    /*----- 회원 제한 게시물 등록 -----*/
-    public PostsResponse addPosts(PostsAddRequest postsAddRequest, String loginUserName) {
-        Users loginUser = userService.getUserByUserName(loginUserName);
-        Posts posts = PostsCreateFactory.of(postsAddRequest, loginUser);
-        Long resultPostId = postsJpaRepository.save(posts).getId();
-        //TODO: 저장 안됐을 때 예외처리
-        PostsResponse addResponse = PostsCreateFactory.of(resultPostId);
-        return addResponse;
+    /*----- 게시물 전체 조회 (Paging)-----*/
+    @Transactional(readOnly = true)
+    public PostsPageResponse getPostALl(Pageable pageable) {
+        Page<Posts> postsPage = postsJpaRepository.findAll(pageable);
+        List<PostsDTO> postsDTOList = postsPage.stream()
+                .map(posts -> PostsCreateFactory.of(posts))
+                .collect(Collectors.toList());
+        return PostsCreateFactory.of(postsDTOList, PostsCreateFactory.newPostsPagingInfo(postsPage));
     }
 
     /*----- 요청 게시물 단건 조회 -----*/
@@ -40,6 +40,16 @@ public class PostsService {
     public PostsDTO getPostsOne(Long postsId) {
         Optional<Posts> getPostsOne = postsJpaRepository.findById(postsId);
         return PostsCreateFactory.of(getPostsOne.get());
+    }
+
+    /*----- 회원 제한 게시물 등록 -----*/
+    public PostsResponse addPosts(PostsAddRequest postsAddRequest, String loginUserName) {
+        Users loginUser = userService.getUserByUserName(loginUserName);
+        Posts posts = PostsCreateFactory.of(postsAddRequest, loginUser);
+        Long resultPostId = postsJpaRepository.save(posts).getId();
+        // TODO: 저장 안됐을 때 예외처리
+        PostsResponse addResponse = PostsCreateFactory.of(resultPostId);
+        return addResponse;
     }
 
     /*----- 요청 게시물 수정(작성자, ADMIN) -----*/
@@ -67,14 +77,5 @@ public class PostsService {
                 );
 
         return PostsCreateFactory.newPostsResponse(postsIdRequest);
-    }
-
-    /*----- 게시물 전체 조회 (Paging)-----*/
-    public PostsPageResponse getPostALl(Pageable pageable) {
-        Page<Posts> postsPage = postsJpaRepository.findAll(pageable);
-        List<PostsDTO> postsDTOList = postsPage.stream()
-                .map(posts -> PostsCreateFactory.of(posts))
-                .collect(Collectors.toList());
-        return PostsCreateFactory.of(postsDTOList, PostsCreateFactory.newPostsPagingInfo(postsPage));
     }
 }
