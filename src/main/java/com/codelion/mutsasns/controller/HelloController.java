@@ -12,6 +12,6 @@ public class HelloController {
 
     @GetMapping("/hello")
     public String helloTest() {
-        return "popin";
+        return "happy_new_year";
     }
 }
