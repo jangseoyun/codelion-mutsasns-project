@@ -64,19 +64,4 @@ public class PostsCreateFactory {
                 .build();
     }
 
-    /*페이징 정보*/
-    /*public static PostPagingInfo newPostsPagingInfo(Page pageResult) {
-        return PostPagingInfo.builder()
-                .pageable("INSTANCE")
-                .last(pageResult.hasNext())
-                .totalPages(pageResult.getTotalPages())
-                .size(pageResult.getSize())
-                .number(pageResult.getNumber())
-                .sort(pageResult.getSort())
-                .first(pageResult.isFirst())
-                .numberOfElements(pageResult.getNumberOfElements())
-                .empty(pageResult.isEmpty())
-                .build();
-    }*/
-
 }
