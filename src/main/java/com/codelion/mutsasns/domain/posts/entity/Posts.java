@@ -1,5 +1,6 @@
 package com.codelion.mutsasns.domain.posts.entity;
 
+import com.codelion.mutsasns.config.BaseEntity;
 import com.codelion.mutsasns.domain.posts.dto.PostsModifyInfo;
 import com.codelion.mutsasns.domain.user.entity.Users;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,19 +8,15 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Getter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "t_post")
-public class Posts {
+public class Posts extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,36 +32,16 @@ public class Posts {
     @JoinColumn(name = "user_id")
     private Users users;
 
-    @CreatedDate
-    @Column(name = "created_at")
-    private String createdAt;
-
-    @LastModifiedDate
-    @Column(name = "last_modified_at")
-    private String lastModifiedAt;
-
     public Posts(String body, String title, Users user) {
         this.body = body;
         this.title = title;
         this.users = user;
     }
 
-    @PrePersist
-    public void onPrePersist() {
-        this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        this.lastModifiedAt = this.createdAt;
-    }
-
-    @PreUpdate
-    public void onPreUpdate() {
-        this.lastModifiedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    }
-
     /* 게시물 수정 */
     public void postsEdit(PostsModifyInfo postsModifyInfo) {
         this.title = postsModifyInfo.getTitle();
         this.body = postsModifyInfo.getBody();
-        this.lastModifiedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
 }
