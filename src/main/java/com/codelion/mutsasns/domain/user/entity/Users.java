@@ -5,9 +5,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Entity
@@ -24,15 +27,32 @@ public class Users {
     private String userName;
     @Column(name = "password")
     private String password;
+
+    @CreatedDate
     @Column(name = "registered_at")
-    private LocalDateTime registeredAt;
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+    private String registeredAt;
+
+    @LastModifiedDate
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private String updatedAt;
+
+    @Column(name = "removed_at")
+    private LocalDateTime removedAt;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private UserRole role = UserRole.USER;
+
+    @PrePersist
+    public void onPrePersist() {
+        this.registeredAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.updatedAt = this.registeredAt;
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
 
     public Users(String userName, String password) {
         this.userName = userName;
