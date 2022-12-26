@@ -1,10 +1,7 @@
 package com.codelion.mutsasns.controller;
 
 import com.codelion.mutsasns.domain.Response;
-import com.codelion.mutsasns.domain.posts.dto.PostsAddRequest;
-import com.codelion.mutsasns.domain.posts.dto.PostsDTO;
-import com.codelion.mutsasns.domain.posts.dto.PostsModifyInfo;
-import com.codelion.mutsasns.domain.posts.dto.PostsResponse;
+import com.codelion.mutsasns.domain.posts.dto.*;
 import com.codelion.mutsasns.exception.ErrorCode;
 import com.codelion.mutsasns.exception.ErrorResult;
 import com.codelion.mutsasns.service.PostsService;
@@ -27,7 +24,7 @@ public class PostController {
 
     /*----- 게시물 전체 조회 -----*/
     @GetMapping("")
-    public Response getPostsAll(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Response<PostsPageResponse> getPostsAll(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return Response.success(postsService.getPostALl(pageable));
     }
 

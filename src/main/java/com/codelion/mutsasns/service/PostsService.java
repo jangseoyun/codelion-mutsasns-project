@@ -32,7 +32,7 @@ public class PostsService {
         List<PostsDTO> postsDTOList = postsPage.stream()
                 .map(posts -> PostsCreateFactory.of(posts))
                 .collect(Collectors.toList());
-        return PostsCreateFactory.of(postsDTOList, PostsCreateFactory.newPostsPagingInfo(postsPage));
+        return PostsCreateFactory.newPostsPageResponse(postsDTOList, postsPage);
     }
 
     /*----- 요청 게시물 단건 조회 -----*/
