@@ -6,7 +6,7 @@
 - Framework : Springboot 2.7.5<br>
 - DB: Mysql<Br>
 - Build tool: Gradle<br>
-- 배포: AWS t3small<br>
+- 배포: AWS ubuntu<br>
 
 🟧 CI / CD: gitlab, crontab <br>
 🟧 API 문서: Swagger UI <br>
@@ -14,6 +14,7 @@
 ## 구현기능
 ### 1차 미션
 - 배포 주소: [swagger 링크](http://ec2-3-39-233-233.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/)
+- Swagger에서 Jwt Token으로 테스트: [링크](https://velog.io/@may_yun/swagger-JWT-%EC%9D%B8%EC%A6%9D%EC%9D%B8%EA%B0%80-%EC%9A%94%EC%B2%AD)
 #### User<br>
   ☑️ 회원가입<br>
   회원 인증,인가 - 회원가입 구현 완료<br>
@@ -32,19 +33,25 @@
 #### Post(CRUD) 공통 기능 Auditing 적용
 : 게시글 작성, 조회(단건 상세조회, 전체 paging), 수정, 삭제 <br>
 
-  ☑️ 전체 조회(페이징)
+  ☑️ 전체 조회(페이징)<br>
   ![img.png](select-all-1.png)
   ![img_1.png](select-all-2.png)
-  
-  ☑️ 게시글 상세조회
+
+  <hr>
+
+  ☑️ 게시글 상세조회<br>
   ![img.png](postdetail.png)
+
+  <hr>
 
   ☑️ 게시글 작성<br>
   Authentication 회원 제한 게시물 등록 접근 가능<br>
   Entity<->DTO 변환: PostsCreateFactory<br>
   ![img.png](post-add.png)
 
-  ☑️ 게시글 삭제
+  <hr>
+
+  ☑️ 게시글 삭제<br>
   ![img.png](post-delete.png)
 
 ### swagger
