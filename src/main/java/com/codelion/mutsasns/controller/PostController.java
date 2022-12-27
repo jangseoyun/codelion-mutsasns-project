@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+/**
+ * 멋쟁이사자처럼 첫번째 미션 Post
+ * @author jang.seoyun (아이다섯이둘)
+ * @version 0.1
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -22,20 +27,33 @@ import javax.validation.Valid;
 public class PostController {
     private final PostsService postsService;
 
-    /*----- 게시물 전체 조회 -----*/
+    /**
+     * 게시물 전체 조회 (paging)
+     * @param pageable 게시물 최신 순으로 20개씩 표시
+     * @return posts, 페이지 정보
+     */
     @GetMapping("")
     public Response<PostsPageResponse> getPostsAll(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         return Response.success(postsService.getPostALl(pageable));
     }
 
-    /*----- 요청 게시물 단건 조회 -----*/
+    /**
+     * 요청 게시물 단건 상세조회
+     * @param postsId
+     * @return id, 제목, 내용, 작성자, 작성날짜, 수정날짜
+     */
     @GetMapping("{postsId}")
     public Response<PostsDTO> getPostsOne(@PathVariable("postsId") Long postsId) {
         PostsDTO getPostsOne = postsService.getPostsOne(postsId);
         return Response.success(getPostsOne);
     }
 
-    /*----- 회원 제한 게시물 등록 -----*/
+    /**
+     * 회원 제한 게시물 등록
+     * @param postsAddRequest
+     * @param authentication
+     * @return 등록된 postId
+     */
     @PostMapping("")
     public Response addPosts(@RequestBody @Valid PostsAddRequest postsAddRequest, Authentication authentication) {
         if (!authentication.isAuthenticated())
@@ -45,7 +63,13 @@ public class PostController {
         return Response.success(postsAddResponse);
     }
 
-    /*----- 요청 게시물 수정(권한: 작성자, ADMIN) -----*/
+    /**
+     * 요청 게시물 수정(권한: 작성자, ADMIN)
+     * @param postsIdRequest 수정할 postId
+     * @param postModifyInfo 수정 내용 (제목, 내용)
+     * @param authentication 로그인 인증
+     * @return 수정완료 메세지, 수정된 postId
+     */
     @PutMapping("{id}")
     public Response<PostsResponse> postsModify(@PathVariable("id") Long postsIdRequest
             , @RequestBody @Valid PostsModifyInfo postModifyInfo
@@ -55,7 +79,12 @@ public class PostController {
         return Response.success(modifyResponse);
     }
 
-    /*----- 요청 게시물 삭제(권한: 작성자, ADMIN) -----*/
+    /**
+     * 요청 게시물 삭제(권한: 작성자, ADMIN)
+     * @param postsIdRequest 삭제할 postId
+     * @param authentication 로그인 인증
+     * @return 삭제완료 메세지, 삭제된 postId
+     */
     @DeleteMapping("{id}")
     public Response<PostsResponse> postsDelete(@PathVariable("id") Long postsIdRequest, Authentication authentication) {
         PostsResponse deleteResponse = postsService.postsDeleteByWriter(postsIdRequest, authentication.getName());
