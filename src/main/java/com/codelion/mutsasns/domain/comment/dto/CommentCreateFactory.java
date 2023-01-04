@@ -37,4 +37,9 @@ public class CommentCreateFactory {
                 .build();
     }
 
+    public static CommentDeleteResponse newDeleteResponse(Long commentId) {
+        return new CommentDeleteResponse(
+                "댓글 삭제 완료"
+                , commentId);
+    }
 }

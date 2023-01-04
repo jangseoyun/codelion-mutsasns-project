@@ -50,4 +50,15 @@ public class CommentService {
         Comment modifyCommentResult = commentsJpaRepository.save(getComment);
         return CommentCreateFactory.newModifyResponse(modifyCommentResult);
     }
+
+    /*------ 댓글 삭제: 권한(댓글 작성한 user)-----*/
+    public CommentDeleteResponse userCheckAndDelete(Long postId, Long commentId, String loginUserName) {
+        commentsJpaRepository.findById(commentId)
+                .filter(comment -> comment.getUsers().getUserName().equals(loginUserName))
+                .ifPresentOrElse(
+                        comment -> commentsJpaRepository.deleteById(commentId),
+                        () -> new MutsaAppException(ErrorCode.INVALID_PERMISSION, "삭제 권한이 없습니다")
+                );
+        return CommentCreateFactory.newDeleteResponse(commentId);
+    }
 }
