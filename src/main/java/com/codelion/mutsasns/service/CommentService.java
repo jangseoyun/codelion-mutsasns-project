@@ -1,8 +1,6 @@
 package com.codelion.mutsasns.service;
 
-import com.codelion.mutsasns.domain.comment.dto.CommentCreateFactory;
-import com.codelion.mutsasns.domain.comment.dto.CommentCreateRequest;
-import com.codelion.mutsasns.domain.comment.dto.CommentCreateResponse;
+import com.codelion.mutsasns.domain.comment.dto.*;
 import com.codelion.mutsasns.domain.comment.entity.Comment;
 import com.codelion.mutsasns.domain.posts.entity.Posts;
 import com.codelion.mutsasns.domain.user.entity.Users;
@@ -14,6 +12,8 @@ import com.codelion.mutsasns.repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -35,6 +35,19 @@ public class CommentService {
         Comment comment = CommentCreateFactory.of(loginUser, findPost, commentCreateRequest);
         Comment commentResult = commentsJpaRepository.save(comment);
 
-        return CommentCreateFactory.from(commentResult);
+        return CommentCreateFactory.newCreateResponse(commentResult);
+    }
+
+    /*------ 댓글 수정: 권한(댓글 작성한 user)-----*/
+    public CommentModifyResponse userCheckAndModify(String loginUserName, Long modifyPostId, Long commentId, CommentModifyRequest commentModifyRequest) {
+        //작성자 check
+        Comment getComment = commentsJpaRepository.findById(modifyPostId)
+                .filter(comment -> comment.getUsers().getUserName().equals(loginUserName))
+                .orElseThrow(() -> new MutsaAppException(ErrorCode.INVALID_PERMISSION, "수정 권한이 없습니다"));
+
+        //수정
+        getComment.modifyComment(commentModifyRequest.getComment());
+        Comment modifyCommentResult = commentsJpaRepository.save(getComment);
+        return CommentCreateFactory.newModifyResponse(modifyCommentResult);
     }
 }

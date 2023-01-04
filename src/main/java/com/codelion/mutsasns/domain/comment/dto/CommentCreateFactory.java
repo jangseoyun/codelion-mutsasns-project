@@ -14,9 +14,20 @@ public class CommentCreateFactory {
         );
     }
 
-    public static CommentCreateResponse from(Comment comment) {
+    public static CommentCreateResponse newCreateResponse(Comment comment) {
         return CommentCreateResponse
                 .toResponseDto()
+                .id(comment.getId())
+                .comment(comment.getComment())
+                .userName(comment.getUsers().getUserName())
+                .postId(comment.getPosts().getId())
+                .createAt(comment.getCreatedAt())
+                .build();
+    }
+
+    public static CommentModifyResponse newModifyResponse(Comment comment) {
+        return CommentModifyResponse
+                .toModifyDto()
                 .id(comment.getId())
                 .comment(comment.getComment())
                 .userName(comment.getUsers().getUserName())
@@ -25,4 +36,5 @@ public class CommentCreateFactory {
                 .lastModifiedAt(comment.getLastModifiedAt())
                 .build();
     }
+
 }
