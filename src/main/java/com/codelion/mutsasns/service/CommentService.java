@@ -41,7 +41,7 @@ public class CommentService {
     /*------ 댓글 수정: 권한(댓글 작성한 user)-----*/
     public CommentModifyResponse userCheckAndModify(String loginUserName, Long modifyPostId, Long commentId, CommentModifyRequest commentModifyRequest) {
         //작성자 check
-        Comment getComment = commentsJpaRepository.findById(modifyPostId)
+        Comment getComment = commentsJpaRepository.findById(commentId)
                 .filter(comment -> comment.getUsers().getUserName().equals(loginUserName))
                 .orElseThrow(() -> new MutsaAppException(ErrorCode.INVALID_PERMISSION, "수정 권한이 없습니다"));
 
