@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentsJpaRepository commentsJpaRepository;
@@ -28,6 +30,7 @@ public class CommentService {
     private final PostsJpaRepository postsJpaRepository;
 
     /*------ 댓글 작성 -----*/
+    @Transactional(readOnly = true)
     public CommentResponse addCommentByUser(Long postsId, String loginUserName, CommentCreateRequest commentCreateRequest) {
         //TODO: user가 있으면 post조회 하도록 stream
         Users loginUser = userJpaRepository.findByUserName(loginUserName)
