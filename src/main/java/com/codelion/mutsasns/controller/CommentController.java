@@ -5,6 +5,9 @@ import com.codelion.mutsasns.domain.comment.dto.*;
 import com.codelion.mutsasns.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,31 +20,36 @@ public class CommentController {
 
     /*---------- 댓글 작성 --------*/
     @PostMapping("/{postsId}/comments")
-    public Response<CommentCreateResponse> addComment(@PathVariable("postsId") Long postsId
+    public Response<CommentResponse> addComment(@PathVariable("postsId") Long postsId
             , @RequestBody CommentCreateRequest commentCreateRequest
             , Authentication authentication) {
 
         String loginUserName = authentication.getName();
-        CommentCreateResponse commentCreateResponse = commentService.addCommentByUser(postsId, loginUserName, commentCreateRequest);
+        CommentResponse commentCreateResponse = commentService.addCommentByUser(postsId, loginUserName, commentCreateRequest);
         return Response.success(commentCreateResponse);
     }
 
     /*---------- 댓글 수정 --------*/
     @PutMapping("/{postId}/comments/{id}")
-    public Response<CommentModifyResponse> commentsModify(@PathVariable("postId") Long postId, @PathVariable("id") Long commentId
-            , Authentication authentication, @RequestBody CommentModifyRequest commentModifyRequest) {
+    public Response<CommentModifyResponse> commentsModify(@PathVariable("id") Long commentId, Authentication authentication, @RequestBody CommentModifyRequest commentModifyRequest) {
         String loginUserName = authentication.getName();
-        CommentModifyResponse commentModifyResponse = commentService.userCheckAndModify(loginUserName, postId, commentId, commentModifyRequest);
+        CommentModifyResponse commentModifyResponse = commentService.userCheckAndModify(loginUserName, commentId, commentModifyRequest);
         return Response.success(commentModifyResponse);
     }
 
-    /*---------- 댓글 수정 --------*/
+    /*---------- 댓글 삭제 --------*/
     @DeleteMapping("/{postsId}/comments/{id}")
-    public Response<CommentDeleteResponse> commentsDelete(@PathVariable("postsId") Long postId, @PathVariable("id") Long commentId
-            , Authentication authentication) {
+    public Response<CommentDeleteResponse> commentsDelete(@PathVariable("id") Long commentId, Authentication authentication) {
         String loginUserName = authentication.getName();
-        CommentDeleteResponse commentDeleteResponse = commentService.userCheckAndDelete(postId, commentId, loginUserName);
+        CommentDeleteResponse commentDeleteResponse = commentService.userCheckAndDelete(commentId, loginUserName);
         return Response.success(commentDeleteResponse);
     }
 
+    /*---------- 댓글 조회(paging: size 10) --------*/
+    @GetMapping("{postId}/comments")
+    public Response<CommentListPageResponse> selectCommentList(@PathVariable("postId") Long postId,
+                                                               @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        CommentListPageResponse commentListPageResponse = commentService.selectCommentList(pageable);
+        return Response.success(commentListPageResponse);
+    }
 }

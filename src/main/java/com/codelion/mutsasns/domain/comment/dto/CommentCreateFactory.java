@@ -3,6 +3,10 @@ package com.codelion.mutsasns.domain.comment.dto;
 import com.codelion.mutsasns.domain.comment.entity.Comment;
 import com.codelion.mutsasns.domain.posts.entity.Posts;
 import com.codelion.mutsasns.domain.user.entity.Users;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public class CommentCreateFactory {
 
@@ -14,8 +18,8 @@ public class CommentCreateFactory {
         );
     }
 
-    public static CommentCreateResponse newCreateResponse(Comment comment) {
-        return CommentCreateResponse
+    public static CommentResponse from(Comment comment) {
+        return CommentResponse
                 .toResponseDto()
                 .id(comment.getId())
                 .comment(comment.getComment())
@@ -41,5 +45,20 @@ public class CommentCreateFactory {
         return new CommentDeleteResponse(
                 "댓글 삭제 완료"
                 , commentId);
+    }
+
+    public static CommentListPageResponse of(List<CommentResponse> commentResponseList, Page<Comment> commentPage) {
+        return CommentListPageResponse.builder()
+                .content(commentResponseList)
+                .pageable(commentPage.getPageable())
+                .last(commentPage.hasNext())
+                .totalPages(commentPage.getTotalPages())
+                .size(commentPage.getSize())
+                .number(commentPage.getNumber())
+                .sort(commentPage.getSort())
+                .numberOfElements(commentPage.getNumberOfElements())
+                .first(commentPage.isFirst())
+                .empty(commentPage.isEmpty())
+                .build();
     }
 }
