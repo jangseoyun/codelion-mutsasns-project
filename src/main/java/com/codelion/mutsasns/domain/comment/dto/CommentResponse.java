@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class CommentCreateResponse {
+public class CommentResponse {
     private Long id;
     private String comment;
     private String userName;
@@ -15,7 +15,7 @@ public class CommentCreateResponse {
     private String createAt;
 
     @Builder(builderMethodName = "toResponseDto")
-    public CommentCreateResponse(Long id, String comment, String userName, Long postId, String createAt) {
+    public CommentResponse(Long id, String comment, String userName, Long postId, String createAt) {
         this.id = id;
         this.comment = comment;
         this.userName = userName;
