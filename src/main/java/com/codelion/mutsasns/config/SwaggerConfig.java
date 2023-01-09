@@ -21,8 +21,9 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.OAS_30)
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
+                .useDefaultResponseMessages(false)
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.codelion.mutsasns"))
                 .paths(PathSelectors.any())
                 .build();
     }
