@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
+//TODO: Data String 타입 LocalDataTime 변경
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
