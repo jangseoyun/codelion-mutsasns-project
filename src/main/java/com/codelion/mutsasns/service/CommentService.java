@@ -1,11 +1,14 @@
 package com.codelion.mutsasns.service;
 
+import com.codelion.mutsasns.domain.alarm.dto.AlarmType;
+import com.codelion.mutsasns.domain.alarm.entity.Alarm;
 import com.codelion.mutsasns.domain.comment.dto.*;
 import com.codelion.mutsasns.domain.comment.entity.Comment;
 import com.codelion.mutsasns.domain.posts.entity.Posts;
 import com.codelion.mutsasns.domain.user.entity.Users;
 import com.codelion.mutsasns.exception.ErrorCode;
 import com.codelion.mutsasns.exception.MutsaAppException;
+import com.codelion.mutsasns.repository.AlarmJpaRepository;
 import com.codelion.mutsasns.repository.CommentsJpaRepository;
 import com.codelion.mutsasns.repository.PostsJpaRepository;
 import com.codelion.mutsasns.repository.UserJpaRepository;
@@ -18,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -28,9 +30,9 @@ public class CommentService {
     private final CommentsJpaRepository commentsJpaRepository;
     private final UserJpaRepository userJpaRepository;
     private final PostsJpaRepository postsJpaRepository;
+    private final AlarmJpaRepository alarmJpaRepository;
 
     /*------ 댓글 작성 -----*/
-    @Transactional(readOnly = true)
     public CommentResponse addCommentByUser(Long postsId, String loginUserName, CommentCreateRequest commentCreateRequest) {
         //TODO: user가 있으면 post조회 하도록 stream
         Users loginUser = userJpaRepository.findByUserName(loginUserName)
@@ -41,7 +43,8 @@ public class CommentService {
 
         Comment comment = CommentCreateFactory.of(loginUser, findPost, commentCreateRequest);
         Comment commentResult = commentsJpaRepository.save(comment);
-
+        //알람 등록
+        insertCommendAlarm(loginUser, postsId, AlarmType.NEW_COMMENT_ON_POST);
         return CommentCreateFactory.from(commentResult);
     }
 
@@ -69,11 +72,19 @@ public class CommentService {
         return CommentCreateFactory.newDeleteResponse(commentId);
     }
 
-    public CommentListPageResponse selectCommentList(Pageable pageable) {
-        Page<Comment> commentPage = commentsJpaRepository.findAll(pageable);
+    /*------ 해당 포스트의 댓글만 조회 -----*/
+    @Transactional(readOnly = true)
+    public CommentListPageResponse selectCommentList(Pageable pageable, Long postId) {
+        Page<Comment> commentPage = commentsJpaRepository.findByPostsId(postId, pageable);
         List<CommentResponse> commentResponseList = commentPage.stream()
                 .map(comment -> CommentCreateFactory.from(comment))
                 .collect(Collectors.toList());
         return CommentCreateFactory.of(commentResponseList, commentPage);
+    }
+
+    /*------ 새 포스트의 알람 등록 -----*/
+    private void insertCommendAlarm(Users user, Long postId, AlarmType alarmType) {
+        Alarm alarm = CommentCreateFactory.of(user, postId, alarmType);
+        alarmJpaRepository.save(alarm);
     }
 }

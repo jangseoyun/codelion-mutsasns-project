@@ -49,7 +49,7 @@ public class CommentController {
     @GetMapping("{postId}/comments")
     public Response<CommentListPageResponse> selectCommentList(@PathVariable("postId") Long postId,
                                                                @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        CommentListPageResponse commentListPageResponse = commentService.selectCommentList(pageable);
+        CommentListPageResponse commentListPageResponse = commentService.selectCommentList(pageable, postId);
         return Response.success(commentListPageResponse);
     }
 }
