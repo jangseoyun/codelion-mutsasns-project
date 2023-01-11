@@ -18,13 +18,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts")
 public class MyFeedController {
-    private final MyFeedService myFeedService;
+            private final MyFeedService myFeedService;
 
-    @GetMapping("/my")
-    public Response<MyFeedListPageResponse> getMyFeedList(Authentication authentication
-            , @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        String loginUserName = authentication.getName();
-        MyFeedListPageResponse myFeedListAll = myFeedService.getMyFeedListAll(loginUserName, pageable);
-        return Response.success(myFeedListAll);
+            /**
+             * 해당 유저의 작성 리스트(마이피드)
+             * @param authentication(인증), 페이징
+             * @return 가공한 myFeedDto, 페이징 정보
+             */
+            @GetMapping("/my")
+            public Response<MyFeedListPageResponse> getMyFeedList(Authentication authentication
+                    , @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+                String loginUserName = authentication.getName();
+                MyFeedListPageResponse myFeedListAll = myFeedService.getMyFeedListAll(loginUserName, pageable);
+                return Response.success(myFeedListAll);
     }
 }
