@@ -36,17 +36,14 @@ public class Likes extends BaseEntity {
     @Column(name = "deleted_at", updatable = false)
     private LocalDateTime deletedAt;
 
-    @Builder(builderMethodName = "insert_deletedAt")
+    @Builder(builderMethodName = "insert_like")
     public Likes(Posts posts, Users users) {
         this.posts = posts;
         this.users = users;
     }
 
-    @Builder(builderMethodName = "remove_deletedAt")
-    public Likes(Posts posts, Users users, LocalDateTime deletedAt) {
-        this.posts = posts;
-        this.users = users;
-        this.deletedAt = deletedAt;
+    public void updateLikeDeletedAt() {
+        this.deletedAt = null;
     }
 
 }

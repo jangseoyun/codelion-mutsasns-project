@@ -35,23 +35,27 @@ public class LikeService {
                 .orElseThrow(() -> new MutsaAppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
         //like 상태 확인
         Optional<Likes> getUserLikeOfPost = likeJpaRepository.checkUserLike(postId, getUser.getId());
-        getUserLikeOfPost
-                .filter(likes -> likes.getDeletedAt() != null)
-                .ifPresent(likes -> LikeCreateFactory.of(getPost, getUser, likes.getDeletedAt()));
 
         if (getUserLikeOfPost.isEmpty()) {
             likeJpaRepository.save(LikeCreateFactory.of(getPost, getUser));
         }
-        /*getUserLikeOfPost
-                .filter(likes -> likes.getDeletedAt() == null)//좋아요 -> delete
-                .ifPresentOrElse(
-                        likes -> likeJpaRepository.deleteById(likes.getId()),
-                        () -> LikeCreateFactory.of(getPost, getUser, getUserLikeOfPost.get().getDeletedAt())
-                );*/
+
+        if (getUserLikeOfPost.isPresent()) {
+            getUserLikeOfPost
+                    .filter(likes -> likes.getDeletedAt() == null)
+                    .ifPresentOrElse(
+                            likes -> likeJpaRepository.deleteById(likes.getId()),
+                            () -> getUserLikeOfPost.get().updateLikeDeletedAt()
+                    );
+        }
         return LikeCreateFactory.from(getUserLikeOfPost.get());
     }
 
     public Long getPostLikeCount(Long postsId) {
         return likeJpaRepository.postLikeCount(postsId);
     }
+
+    /*------ 좋아요 알람 등록 -----*/
+
+
 }
