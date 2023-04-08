@@ -79,7 +79,7 @@
 
 ## 2-2) Return Example(Json 형태) 타입
 
-<h3> <a href="https://documenter.getpostman.com/view/21461415/2s93XsXR8m" target="_blank">🔗 Postman Example 문서화 Link</a> </h3>
+<h3><a href="https://documenter.getpostman.com/view/21461415/2s93XsXR8m" target="_blank">🔗 Postman Example 문서화 Link</a> </h3>
 
 ---
 
