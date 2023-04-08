@@ -83,7 +83,7 @@ jacocoTestReport {
         )
     }
 
-    finalizedBy 'jacocoTestCoverageVerification'
+    finalizedBy 'jacocoTestCoverageVerification' //리포트 작성 후 검증단계
 }
 
 // 검증 단계
