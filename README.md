@@ -1,6 +1,6 @@
 # 📌 Likelion 개인 프로젝트
 > - 배포 주소: [swagger 링크](http://ec2-3-39-233-233.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/)
-> - Swagger에서 JWT Token으로 테스트하는 방법: [블로그 링크](https://velog.io/@may_yun/swagger-JWT-%EC%9D%B8%EC%A6%9D%EC%9D%B8%EA%B0%80-%EC%9A%94%EC%B2%AD)
+> - Swagger에서 JWT Token으로 테스트하는 방법: <a href="https://velog.io/@may_yun/swagger-JWT-%EC%9D%B8%EC%A6%9D%EC%9D%B8%EA%B0%80-%EC%9A%94%EC%B2%AD" target="_blank"> 블로그 링크 </a>
 
 ---
 
@@ -77,8 +77,9 @@
 ☑️ Swagger를 이용하여 게시글 API 문서 자동화<br>
 ☑️ develop 브랜치에 push 할 경우 project-lion-api 애플리케이션 AWS EC2 서버에 자동으로 배포 되도록 CI/CD<br>
 
-## 2-2) Return Example(Json 형태)타입
-### 🔗 [Postman Example 문서화 Link](https://documenter.getpostman.com/view/21461415/2s93XsXR8m)
+## 2-2) Return Example(Json 형태) 타입
+
+<h3> <a href="https://documenter.getpostman.com/view/21461415/2s93XsXR8m" target="_blank">🔗 Postman Example 문서화 Link</a> </h3>
 
 ---
 
