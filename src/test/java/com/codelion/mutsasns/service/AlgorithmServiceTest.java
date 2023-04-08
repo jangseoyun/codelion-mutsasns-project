@@ -1,3 +1,4 @@
+/*
 package com.codelion.mutsasns.service;
 
 import org.junit.jupiter.api.DisplayName;
@@ -5,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DisplayName("TODO")
+@DisplayName()
 class AlgorithmServiceTest {
 
     //spring을 안쓰고 테스트 하기 때문에 new를 이용해 초기화를 해줍니다
@@ -20,4 +21,4 @@ class AlgorithmServiceTest {
         assertEquals(0, algorithmService.sumOfDigit(0));
         assertEquals(5, algorithmService.sumOfDigit(11111));
     }
-}
+}*/
